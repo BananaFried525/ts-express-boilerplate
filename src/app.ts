@@ -4,7 +4,9 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import cookieParser from 'cookie-parser'
 import * as userController from './controllers/user'
+import {connectMQ} from './queues/producer'
 
+connectMQ()
 const app = express()
 const port = process.env.PORT || 3000
 
