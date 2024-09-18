@@ -4,7 +4,7 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import cookieParser from 'cookie-parser'
 import * as userController from './controllers/user'
-import {connectMQ} from './queues/producer'
+import {connectMQ, sendMessage} from './queues/producer'
 
 connectMQ()
 const app = express()
@@ -21,6 +21,12 @@ app.get('/', (req, res) => {
 
 app.get('/test',userController.getUser)
 
+app.get('/send', (req,res) => {
+  sendMessage('test')
+  return res.json({message: 'ok'})
+})
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})
+}) 
