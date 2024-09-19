@@ -1,4 +1,5 @@
-import amqp, { Connection } from 'amqplib/callback_api'
+import amqp, { Channel, Connection } from 'amqplib/callback_api'
+import * as Types from 'type/queues/producer'
 
 let connection: Connection
 
@@ -15,27 +16,21 @@ export const connectMQ = async () => {
     })
   } catch (error) {
     console.log(error)
+    process.exit(1)
   }
 }
 
-const TOPIC_NAME = 'test.topic'
-export const sendMessage = (message: string) => {
-  try {
-    console.log('Creating channel...')
-    connection.createChannel((err, channel) => {
-      console.log('Channel created!')
-      if (err) {
-        console.log(err)
-        throw err
-      }
-  
-      channel.assertExchange(TOPIC_NAME, 'topic', { durable: true })
-      channel.publish(TOPIC_NAME, 'test', Buffer.from(message))
-      console.log(`[x] Sent ${message}`)
+export const sendMessage = ({ topicName, key, message }: Types.SendMessageParams) => {
+  connection.createChannel((err, channel) => {
+    if (err) {
+      console.log(err)
+      throw err
+    }
+
+    channel.assertExchange(topicName, 'topic', {
+      durable: true
     })
-  } catch (error) {
-    console.log(error)
-  } finally {
-    // connection.close()
-  }
+    channel.publish(topicName, key, Buffer.from(message), { persistent: true })
+    console.log(`[x] Sent ${message}`)
+  })
 }

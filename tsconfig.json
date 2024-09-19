@@ -2,20 +2,40 @@
   "compilerOptions": {
     "target": "es6",
     "module": "CommonJS",
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "rootDir": "./src/",
     "strict": true,
-    "newLine": "lf",
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "boot/*": [
+        "./src/boot/*"
+      ],
+      "controllers/*": [
+        "./src/controllers/*"
+      ],
+      "queues/*": [
+        "./src/queues/*"
+      ],
+      "type/*": [
+        "./src/type/*"
+      ],
+      "validates/*": [
+        "./src/validates/*"
+      ],
+      // "@test/*": ["./test/*"]
+    },
     "esModuleInterop": true,
-    "outDir": "dist",
-    "rootDir": "src"
-  },
-  "include": [
-    "src/**/*"
-  ],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+  },  
+  // "include": [
+  //   "src/**/*"
+  // ],
   "exclude": [
     "node_modules",
-    "dist",
-    "*.d.ts",
-    ".vscode"
-  ]
-  
+    "test/**/*.test.ts"
+  ],
 }
